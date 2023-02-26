@@ -27,7 +27,8 @@ export const LoginContextProvider = (props) => {
   };
   const loginContext = {
     email: email,
-    idToken: idToken,
+    // idToken:loginCtx.idToken,
+     idToken:idToken,
     login: loginHandler,
     logout: logoutHandler,
   };
