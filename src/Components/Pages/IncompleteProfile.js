@@ -2,6 +2,7 @@ import classes from "./IncompleteProfile.module.css";
 import React, { useContext,useEffect,useState } from "react";
 import { useRef } from "react";
 import LoginContext from "../Context/LoginContext";
+import Form from "../Layout/Form";
 
 const IncompleteProfile = () => {
   const [displayNameValue, setDisplayNameValue] = useState("");
@@ -69,14 +70,14 @@ const IncompleteProfile = () => {
     fillInputsHandler();
   }, []);
   return (
-    <form className={classes.IncompleteProfile} onSubmit={updateDetailsHandler}>
+    <Form className={classes.IncompleteProfile} onSubmit={updateDetailsHandler}>
       <h3>Contact Details</h3>
       <div>
         <input placeholder="Full Name" input="text" ref={fullNameRef} defaultValue={displayNameValue}/>
         <input placeholder="Profile Photo URL" input="text" ref={photoRef} defaultValue={photoUrlValue}/>
       </div>
       <button>Update Details</button>
-    </form>
+    </Form>
   );
 };
 

@@ -36,7 +36,7 @@ const Welcome = () => {
         Your Profile is incomplete.
         <Link to="/incompleteProfile"> Complete Profile</Link>
       </p>
-      <button onClick={verifyEmailHandler}>Verify Email</button>
+      <button  style={{float:'right',marginBottom:'500px'}} onClick={verifyEmailHandler}>Verify Email</button>
     </div>
   );
 };

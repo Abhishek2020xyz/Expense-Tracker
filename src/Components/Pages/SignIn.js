@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { useRef } from "react";
-import { useHistory} from "react-router-dom";
+import { Link , useHistory} from "react-router-dom";
 import LoginContext from "../Context/LoginContext";
+import Form from "../Layout/Form";
 import classes from "./SignIn.module.css";
 
 const SignIn = () => {
@@ -49,7 +50,7 @@ const SignIn = () => {
     }
   };
   return (
-    <form onSubmit={signInSubmitHandler} className={classes.signIn}>
+    <Form onSubmit={signInSubmitHandler} className={classes.signIn}>
     <div>
       <h3>Sign In</h3>
     </div>
@@ -68,7 +69,8 @@ const SignIn = () => {
       />
     </div>
     <button>Sign In</button>
-  </form>
+    <Link to="/forgotPassword">Forgot Password?</Link>
+  </Form>
 );
 };
 export default SignIn;
