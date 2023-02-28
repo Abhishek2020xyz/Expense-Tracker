@@ -3,6 +3,7 @@ import React, { useState } from "react";
 const LoginContext = React.createContext({
   email: null,
   idToken: null,
+  isLoggedIn: false,
   login: () => {},
   logout: () => {},
 });
@@ -10,16 +11,20 @@ const LoginContext = React.createContext({
 export const LoginContextProvider = (props) => {
   const [email, setEmail] = useState(localStorage.getItem("emailId"));
   const [idToken, setIdToken] = useState(localStorage.getItem("idToken"));
+  const [isLoggedIn, setIsLoggedIn] =useState(!!localStorage.getItem("emailId"))
 
   const loginHandler = (email, idToken) => {
     setEmail(email);
     setIdToken(idToken);
+    setIsLoggedIn(true);
+
     localStorage.setItem("EmailId", email);
     localStorage.setItem("idToken", idToken);
   };
   const logoutHandler = () => {
     setEmail(null);
     setIdToken(null);
+    setIsLoggedIn(false);
 
     localStorage.removeItem("emailId");
     localStorage.removeItem("idToken");
@@ -27,8 +32,8 @@ export const LoginContextProvider = (props) => {
   };
   const loginContext = {
     email: email,
-    
-     idToken:idToken,
+    idToken:idToken,
+    isLoggedIn:isLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
   };

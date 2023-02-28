@@ -2,9 +2,11 @@ import React, {useContext} from "react";
 import { Link } from "react-router-dom";
 import LoginContext from "../Context/LoginContext";
 
-const Welcome = () => {
 
+const Welcome = () => {
+ 
   const loginCtx = useContext(LoginContext);
+  
 
   const verifyEmailHandler = async () =>{
   const response = await fetch(
@@ -30,11 +32,12 @@ const Welcome = () => {
 
   return (
     <div>
-      <h2>Welcome To Expense Tracker</h2>
+      {/* <h2>Welcome To Expense Tracker</h2> */}
       
       <p>
         Your Profile is incomplete.
         <Link to="/incompleteProfile"> Complete Profile</Link>
+        <Link to="/expenses">Expenses</Link>
       </p>
       <button  style={{float:'right',marginBottom:'500px'}} onClick={verifyEmailHandler}>Verify Email</button>
     </div>
