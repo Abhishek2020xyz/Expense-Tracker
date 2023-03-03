@@ -5,17 +5,18 @@ import {Redirect,Route} from "react-router-dom";
 import SignIn from "./Components/Pages/SignIn";
 import Welcome from "./Components/Pages/Welcome";
 import IncompleteProfile from "./Components/Pages/IncompleteProfile";
-import LoginContext,  {LoginContextProvider} from "./Components/Context/LoginContext";
+import LoginContext from "./Components/Context/LoginContext";
 import ForgotPassword from "./Components/Pages/ForgotPassword";
 import { useContext } from "react";
 import Expenses from "./Components/Expenses/Expenses";
+import { ExpenseContextProvider } from "./Components/Context/ExpenseContext";
 function App() {
 
   const loginCtx = useContext(LoginContext);
   const isLoggedIn = loginCtx.isLoggedIn
   return (
     <React.Fragment>
-      <LoginContextProvider>
+      {/* <LoginContextProvider> */}
        <Header></Header>
         {/* <Route path="*">
           <Redirect to="/signUp" />
@@ -38,10 +39,15 @@ function App() {
         {/* <Route path="/expenses">
         {isLoggedIn ? <Expenses/> : <Redirect to="/expenses" />}
         </Route> */}
-        <Route path="/expenses">
+        {/* <Route path="/expenses">
           <Expenses/>
+        </Route> */}
+      {/* </LoginContextProvider> */}
+      <ExpenseContextProvider>
+        <Route path="/expenses">
+          {isLoggedIn ? <Expenses /> : <Redirect to="/signIn" />}
         </Route>
-      </LoginContextProvider>
+      </ExpenseContextProvider>
     </React.Fragment>
   );
 }
