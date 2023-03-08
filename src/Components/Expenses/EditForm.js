@@ -1,9 +1,11 @@
-import { useContext, useRef } from "react";
+import {  useRef } from "react";
 import Form from "../Layout/Form";
 import ExpenseContext from "../Context/ExpenseContext";
 import classes from "./EditForm.module.css";
 import React from "react";
 import ReactDOM from "react-dom";
+import { useDispatch } from "react-redux";
+import { ExpenseActions } from "../Store/ExpenseReducer";
 
 
 const Backdrop = (props) => {
@@ -12,15 +14,16 @@ const Backdrop = (props) => {
   
   const EditForm = (props) => {
     const id = document.getElementById("EditModalOverlay");
-    const expenseCtx = useContext(ExpenseContext);
+    //const expenseCtx = useContext(ExpenseContext);
   
+    const dispatch = useDispatch();
     const moneyRef = useRef("");
     const descRef = useRef("");
     const categoryRef = useRef("");
   
     const expense = props.editExpense;
   
-    const editExpenseHandler = (event) => {
+    const editExpenseHandler = async (event) => {
       event.preventDefault();
   
       const expenseItem = {
@@ -29,9 +32,33 @@ const Backdrop = (props) => {
         description: descRef.current.value,
         category: categoryRef.current.value,
       };
-      expenseCtx.editExpense(expenseItem);
-      props.onClose();
+      try {
+        const response = await fetch(
+          `https://postvalue-77b81-default-rtdb.firebaseio.com/expense/${expenseItem.id}.json`,
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              money: expenseItem.money,
+              description: expenseItem.description,
+              category: expenseItem.category,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        console.log("EditForm", data);
+        props.getExpenseFetching();
+      } catch (error) {
+        alert(error.message);
+      }
+  
+      setTimeout(() => {
+        props.onClose();
+      }, 1000);
     };
+    
   
     const Overlay = () => {
       return (

@@ -1,13 +1,32 @@
-import { useContext } from "react";
-import ExpenseContext from "../Context/ExpenseContext";
-
+// import { useContext } from "react";
+// import ExpenseContext from "../Context/ExpenseContext";
+import { useDispatch, useSelector } from "react-redux";
 
 const ExpenseItem = (props) => {
-    const expenseCtx = useContext(ExpenseContext);
+    //const expenseCtx = useContext(ExpenseContext);
+    const expenses = useSelector((state) => state.expense.expenses);
+
+    const deleteExpenseHandler = async (id) => {
+      try {
+        const response = await fetch(
+          `https://postvalue-77b81-default-rtdb.firebaseio.com/expense/${id}.json`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
   
+        props.getExpenseFetching();
+      } catch (error) {
+        alert(error.message);
+      }
+    };
     return (
       <ul>
-        {expenseCtx.expenses.map((expenseItem) => (
+        {expenses.map((expenseItem) => (
           <li key={expenseItem.id}>
             {expenseItem.money} {expenseItem.description} {expenseItem.category}
             <button
@@ -21,7 +40,7 @@ const ExpenseItem = (props) => {
           >
             Edit
           </button>
-          <button onClick={expenseCtx.deleteExpense.bind(null, expenseItem.id)}>
+          <button onClick={deleteExpenseHandler.bind(null, expenseItem.id)}>
             Delete
           </button>
         </li>

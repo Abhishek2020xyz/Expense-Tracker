@@ -45,6 +45,7 @@ const SignUp = () => {
         }
       );
       const data = await response.json();
+      console.log("sign up is successfully");
       if (response.ok) {
         console.log(data.email);
         emailRef.current.value = "";
