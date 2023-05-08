@@ -27,7 +27,7 @@ function App() {
   const getExpenseFetching = async () => {
     try {
       const response = await fetch(
-        "https://postvalue-77b81-default-rtdb.firebaseio.com/expense.json",
+        `https://postvalue-77b81-default-rtdb.firebaseio.com/expense/${localStorage.getItem('email')}.json`,
         {
           method: "GET",
           headers: {
@@ -76,23 +76,26 @@ function App() {
       <Route path="/welcome">
         <Welcome />
       </Route>
+
+      {/* <Route path="/welcome">
+        {isLoggedIn ? (
+          <Welcome  />
+        ) : (
+          <Redirect to="/signIn" />
+        )}
+      </Route> */}
+
       <Route path="/incompleteProfile">
         <IncompleteProfile />
       </Route>
       <Route path="/forgotPassword">
         <ForgotPassword />
       </Route>
-      {/* <ExpenseContextProvider>
-        <Route path="/expenses">
-          {isLoggedIn ? <Expenses /> : <Redirect to="/signIn" />}
-        </Route>
-      </ExpenseContextProvider> */}
+     
       <Route path="/expenses">
-        {isLoggedIn ? (
-          <Expenses getExpenseFetching={getExpenseFetching} />
-        ) : (
-          <Redirect to="/signIn" />
-        )}
+       
+       <Expenses getExpenseFetching={getExpenseFetching} />
+      
       </Route>
     </React.Fragment>
   ); 

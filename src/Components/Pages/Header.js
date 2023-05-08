@@ -69,8 +69,8 @@ const expenses = useSelector((state) => state.expense.expenses);
         </div>
       {!isLoggedIn.email && <Link to="/signUp">Sign Up</Link>}
       {!isLoggedIn.email && <Link to="/signIn">Sign In</Link>}
-      {!!isLoggedIn.email && <Link to="/expenses">Expenses</Link>}
-      {!!isLoggedIn.email && (<Link onClick={logoutHandler} to="/signIn">Logout </Link>)}
+       {/* {!isLoggedIn.email && <Link to="/expenses">Expenses</Link>} */}
+      {!isLoggedIn.email && (<Link onClick={logoutHandler} to="/signIn">Logout </Link>)} 
       
       {!!isLoggedIn && expensesAmount > 1000 && premiumButton && (
         <button onClick={activatePremiumAccount}>Premium Account</button>

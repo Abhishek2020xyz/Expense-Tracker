@@ -39,6 +39,8 @@ const SignIn = () => {
     const data = await response.json();
 
     if (response.ok) {
+      const replacedEmailId =emailValue.replace("@", "").replace(".", "");
+      localStorage.setItem('email',replacedEmailId)
       console.log(data.email);
 
       emailRef.current.value = "";
@@ -47,7 +49,7 @@ const SignIn = () => {
       //loginCtx.login(data.email, data.idToken);
       dispatch(AuthActions.login({ email: data.email, idToken: data.idToken }));
 
-      history.replace("/expenses");
+      history.replace("/welcome");
     } else {
       alert(data.error.message);
     }

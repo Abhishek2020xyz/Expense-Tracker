@@ -1,13 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 //import LoginContext from "../Context/LoginContext";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import Expenses from "../Expenses/Expenses";
+ import { AuthActions } from "../Store/AuthReducer";
 
 const Welcome = () => {
  
   //const loginCtx = useContext(LoginContext);
   const idToken = useSelector((state) => state.auth.idToken);
+  
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  const dispatch = useDispatch();
 
   const verifyEmailHandler = async () =>{
   const response = await fetch(
@@ -39,8 +44,10 @@ const Welcome = () => {
       <p>
         Your Profile is incomplete.
         <Link to="/incompleteProfile"> Complete Profile</Link>
-        {/* <Link to="/expenses">Expenses</Link> */}
-      </p>
+        </p>
+          {!isLoggedIn.email && <Link to ="/expenses">Expenses</Link>}
+          
+
       <button  style={{float:'right',marginBottom:'500px'}} onClick={verifyEmailHandler}>Verify Email</button>
       
     

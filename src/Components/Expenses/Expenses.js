@@ -1,17 +1,15 @@
-import React, {useRef, useContext, useEffect,useState} from "react";
-//import ExpenseContext from "../Context/ExpenseContext";
+import React, {useRef,  useEffect} from "react";
+
 import Form from "../Layout/Form";
-import EditForm from "./EditForm";
-import ExpenseItem from "./ExpenseItem";
+
 import { useSelector } from "react-redux";
-//import { useDispatch } from "react-redux";
-//import { ExpenseActions } from "../Store/ExpenseReducer";
+
+import { ExpenseActions } from "../Store/ExpenseReducer";
 import "./Expenses.css";
 
 const Expenses = (props) =>{
-    //const expenseCtx = useContext(ExpenseContext);
-    const [editFormState, setEditFormState] = useState(false);
-    const [editExpense, setEditExpense] = useState("");
+  const expenses = useSelector((state) => state.expense.expenses);
+   
 
     const theme = useSelector((state) => state.theme.theme);
     const moneyRef = useRef("");
@@ -26,30 +24,21 @@ const Expenses = (props) =>{
             category: categoryRef.current.value,
           };
       
-          addExpenseFetching(expense);
-       moneyRef.current.value = "";
+    addExpenseFetching(expense);
+    moneyRef.current.value = "";
     descRef.current.value = "";
-    categoryRef.current.value = "Food";
+    categoryRef.current.value = "";
+
+    console.log(expense)
   };
 
-  const editExpenseHandler = (id, money, description, category) => {
-    setEditFormState(true);
-    const expense = {
-      id: id,
-      money: money,
-      description: description,
-      category: category,
-    };
-    setEditExpense(expense);
-  };
+  
 
-  const onCloseStateHandler = () => {
-    setEditFormState(false);
-  };
+  
   const addExpenseFetching = async (expense) => {
     try {
       const response = await fetch(
-        "https://postvalue-77b81-default-rtdb.firebaseio.com/expense.json",
+        `https://postvalue-77b81-default-rtdb.firebaseio.com/expense/${localStorage.getItem('email')}.json`,
         {
           method: "POST",
           body: JSON.stringify({
@@ -68,11 +57,41 @@ const Expenses = (props) =>{
     } catch (error) {
       alert(error.message);
     }
+    
   };
 
         useEffect(() => {
           props.getExpenseFetching();
         }, []);
+
+        const deleteExpenseHandler = (id) => {
+          fetch(
+            `https://postvalue-77b81-default-rtdb.firebaseio.com/expense/${localStorage.getItem('email')}/${id}.json`,
+            {
+              method: "DELETE",
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+               console.log(data);
+              // getExpenseData();
+              props.getExpenseFetching();
+              
+              console.log("Expense successfuly deleted");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        };
+const editExpenseHandler = (expenseItem) => {
+ 
+  moneyRef.current.value= expenseItem.money;
+  descRef.current.value = expenseItem.description;
+  categoryRef.current.value = expenseItem.category;
+
+  deleteExpenseHandler(expenseItem.id);
+  };
+
 
     return(
       <div className={`${theme}`}>
@@ -98,19 +117,26 @@ const Expenses = (props) =>{
              </div>
              <button>Add Expense</button>
             </Form>
-            <ExpenseItem
-            editExpense={editExpenseHandler}
-           getExpenseFetching={props.getExpenseFetching}
-           />
-            
-      {editFormState && (
-        <EditForm
-        onClose={onCloseStateHandler}
-        editExpense={editExpense}
-        getExpenseFetching={props.getExpenseFetching}
-      />
-      )}
+          
+      <div>
+      <ul>
+        {expenses.map((expenseItem,id) => (
+          <li key={id}>
+            {expenseItem.money} {expenseItem.description} {expenseItem.category}
+
+           
+          <button onClick={()=>editExpenseHandler(expenseItem)}>Edit</button>
+            <button onClick={()=>deleteExpenseHandler(expenseItem.id)}>
+              Delete
+            </button>
+        </li>
+      ))}
+    </ul>
+      </div>
         </div>
     )
 }
 export default Expenses;
+
+
+

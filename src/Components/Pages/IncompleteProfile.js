@@ -20,7 +20,7 @@ const IncompleteProfile = () => {
     const fullName = fullNameRef.current.value;
     const photoUrl = photoRef.current.value;
     const response = await fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCcDNxwm_rDXN068U1-nrHh3QKnnEGtZbY",
+      "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAiA7k_TM7d31am4CliGffDQm__Inh4Kcs",
       {
         method: "POST",
         body: JSON.stringify({
